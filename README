@@ -1,13 +1,43 @@
-NavHelper
+Description
 =========
 
-Introduction goes here.
+This is a simple plugin for creating navigation links in your Rails app.  There's a number of similar plugins out there, none seemed to work quite the way I liked so here we are.
+
+
+Features
+========
+-define you navigation in the view where the html will end up (benefit to me, drawback to some)
+-smart defaults so that you don't waste your time
+-can override most objects to make it work like you need to
 
 
 Example
 =======
 
-Example goes here.
+In your view do something like this:
+<%navigation do |nav|%>
+  <%if logged_in? %>
+    <%=nav.item :logout%>
+    <%=nav.item :posts, :link=>user_posts_url(current_user), 
+                :selected_if=>Proc.new {|controller| controller.controller_name.to_sym == :posts}%>
+  <%else%>
+    <%=nav.item :signup%> #uses the signup_url helper
+    <%=nav.item :login%>  #uses the login_url helper
+  <%end%>
+<%end%>
+
+The HTML it outputs will look something like this:
+<ul class='nav_bar'>
+  <li><a href='/logout'>Logout</a></li>
+  <li class='current'><a href='/user/1/posts'>Posts</a></li>
+  <li class='clear'></li>
+</ul>
+
+
+TODO
+=====
+
+Tests!
 
 
 Copyright (c) 2009 John Duff, released under the MIT license
